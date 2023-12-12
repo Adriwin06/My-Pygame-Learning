@@ -8,6 +8,9 @@ SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Test Python Game')
 
+# Set Framerate (So it doesn't go too crazy with higher framerate)
+clock = pygame.time.Clock()
+FPS = 120
 
 # Player Actions
 moving_left = False
@@ -18,7 +21,7 @@ moving_down = False
 
 # Defining the Player Class
 class Soldier(pygame.sprite.Sprite):
-    def __init__(self, x= 400, y=400, scale=0.1, speed=4):
+    def __init__(self, x= 400, y=400, scale=0.1, speed=3):
         pygame.sprite.Sprite.__init__(self)
         self.speed = speed
         img = pygame.image.load('img/player/idle/0.png')
@@ -57,16 +60,20 @@ player = Soldier()
 run = True
 while run:
 
+    # Lock Framerate
+    clock.tick(FPS)
+
     # Making the backgroung Dark
     screen.fill((0, 0, 0))
 
     # Drawing the player on the screen
     player.draw()
     
+    # Moving the player
     player.move(moving_left, moving_right, moving_up, moving_down)
 
 
-# Event Handler
+    # Event Handler
     for event in pygame.event.get():
         
         # Getting pressed keyboard keys
