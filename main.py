@@ -54,6 +54,7 @@ class Soldier(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect)
         
 
+# Defining the Map class
 class Map(pygame.sprite.Sprite):
     def __init__(self, img="img/map.png", x=1280/2, scale=2.8, y=720/2, speed=3):
         pygame.sprite.Sprite.__init__(self)
@@ -63,8 +64,20 @@ class Map(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
     
+    # Drawing map
     def draw(self):
         screen.blit(self.image, self.rect)
+
+
+# Defining the Hitbox class ; x is x position of the centre of the hitbox, same for y, and W is the width and H the height
+class Hitbox:
+    def __init__(self, x, y, W, H):
+        self.left, self.right = x - W/2, x + W/2
+        self.up, self.down = y - H/2, y + H/2
+        
+    def collide(self, other):
+        assert isinstance(other, Hitbox), "Can't collide Hitbox with another type"
+        return self.left==other.right or self.right==other.left or self.up==other.down
         
 
 # Creating the Player
@@ -82,6 +95,7 @@ while run:
     # Making the backgroung Dark
     screen.fill((0, 0, 0))
     
+    # Drawing the map on the screen
     map1.draw()
 
     # Drawing the player on the screen
