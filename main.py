@@ -70,7 +70,7 @@ class Map(pygame.sprite.Sprite):
 # Creating the Player
 player = Soldier()
 
-mapeu = Map()
+map1 = Map()
 
 # Game Loop
 run = True
@@ -82,7 +82,7 @@ while run:
     # Making the backgroung Dark
     screen.fill((0, 0, 0))
     
-    mapeu.draw()
+    map1.draw()
 
     # Drawing the player on the screen
     player.draw()
