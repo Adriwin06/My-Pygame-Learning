@@ -39,25 +39,25 @@ class Soldier(pygame.sprite.Sprite):
         if moving_left:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dx = self.speed*2.1
+                    dx = self.speed*2.5
                     break
             dx += -self.speed
         if moving_right:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dx = -self.speed*2.1
+                    dx = -self.speed*2.5
                     break
             dx += self.speed
         if moving_up:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dy = self.speed*2.1
+                    dy = self.speed*2.5
                     break
             dy += -self.speed
         if moving_down:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dy = -self.speed*2.1
+                    dy = -self.speed*2.5
                     break
             dy += self.speed
 
@@ -93,25 +93,25 @@ class Entity(pygame.sprite.Sprite):
         if moving_left:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dx = self.speed*2.1
+                    dx = self.speed*2.5
                     break
             dx += -self.speed
         if moving_right:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dx = -self.speed*2.1
+                    dx = -self.speed*2.5
                     break
             dx += self.speed
         if moving_up:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dy = self.speed*2.1
+                    dy = self.speed*2.5
                     break
             dy += -self.speed
         if moving_down:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dy = -self.speed*2.1
+                    dy = -self.speed*2.5
                     break
             dy += self.speed
 
