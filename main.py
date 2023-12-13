@@ -52,9 +52,25 @@ class Soldier(pygame.sprite.Sprite):
     # Drawing the Soldier to the screen
     def draw(self):
         screen.blit(self.image, self.rect)
+        
+
+class Map(pygame.sprite.Sprite):
+    def __init__(self, img="img/map.png", x=1280/2, scale=2.8, y=720/2, speed=3):
+        pygame.sprite.Sprite.__init__(self)
+        self.speed = speed
+        img = pygame.image.load(img)
+        self.image = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+    
+    def draw(self):
+        screen.blit(self.image, self.rect)
+        
 
 # Creating the Player
 player = Soldier()
+
+mapeu = Map()
 
 # Game Loop
 run = True
@@ -65,6 +81,8 @@ while run:
 
     # Making the backgroung Dark
     screen.fill((0, 0, 0))
+    
+    mapeu.draw()
 
     # Drawing the player on the screen
     player.draw()
