@@ -35,6 +35,7 @@ class Soldier(pygame.sprite.Sprite):
         self.rect.center = (x, y)
         self.hitbox = Hitbox(x, y, self.image)
         self.pos = 0
+        self.pos2 = 0
 
     def move(self, moving_left, moving_right, moving_up, moving_down):
         # reset movement variables
@@ -44,40 +45,55 @@ class Soldier(pygame.sprite.Sprite):
         self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
         for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    if self.pos == "left":
+                    if self.pos == "left" or self.pos2 == "left":
                         self.rect.x += self.speed
-                    if self.pos == "right":
+                    if self.pos == "right" or self.pos2 == "right":
                         self.rect.x -= self.speed
-                    if self.pos == "up":
+                    if self.pos == "up" or self.pos2 == "up":
                         self.rect.y += self.speed
-                    if self.pos == "down":
+                    if self.pos == "down" or self.pos2 == "down":
                         self.rect.y -= self.speed
                     break
         self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
+        
+        self.pos = 0
+        self.pos2 = 0
 
         # Assign movement variable if moving
         if moving_left:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    self.pos = "left"
+                    if self.pos == 0:
+                        self.pos = "left"
+                    else:
+                        self.pos2 = "left"
                     break
             dx += -self.speed
         if moving_right:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    self.pos = "right"
+                    if self.pos == 0:
+                        self.pos = "right"
+                    else:
+                        self.pos2 = "right"
                     break
             dx += self.speed
         if moving_up:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    self.pos = "up"
+                    if self.pos == 0:
+                        self.pos = "up"
+                    else:
+                        self.pos2 = "up"
                     break
             dy += -self.speed
         if moving_down:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    self.pos = "down"
+                    if self.pos == 0:
+                        self.pos = "down"
+                    else:
+                        self.pos2 = "down"
                     break
             dy += self.speed
 
@@ -109,43 +125,57 @@ class Entity(pygame.sprite.Sprite):
         dx = 0
         dy = 0
 
-        self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
         for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    if self.pos == "left":
+                    if self.pos == "left" or self.pos2 == "left":
                         self.rect.x += self.speed
-                    if self.pos == "right":
+                    if self.pos == "right" or self.pos2 == "right":
                         self.rect.x -= self.speed
-                    if self.pos == "up":
+                    if self.pos == "up" or self.pos2 == "up":
                         self.rect.y += self.speed
-                    if self.pos == "down":
+                    if self.pos == "down" or self.pos2 == "down":
                         self.rect.y -= self.speed
                     break
         self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
+        
+        self.pos = 0
+        self.pos2 = 0
 
         # Assign movement variable if moving
-        if moving_left2:
+        if moving_left:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    self.pos = "left"
+                    if self.pos == 0:
+                        self.pos = "left"
+                    else:
+                        self.pos2 = "left"
                     break
             dx += -self.speed
-        if moving_right2:
+        if moving_right:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    self.pos = "right"
+                    if self.pos == 0:
+                        self.pos = "right"
+                    else:
+                        self.pos2 = "right"
                     break
             dx += self.speed
-        if moving_up2:
+        if moving_up:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    self.pos = "up"
+                    if self.pos == 0:
+                        self.pos = "up"
+                    else:
+                        self.pos2 = "up"
                     break
             dy += -self.speed
-        if moving_down2:
+        if moving_down:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    self.pos = "down"
+                    if self.pos == 0:
+                        self.pos = "down"
+                    else:
+                        self.pos2 = "down"
                     break
             dy += self.speed
 
@@ -170,10 +200,10 @@ class Map(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
 
-        self.left_barrier = Barrier(self.rect.left-200, self.rect.top, 245, self.rect.height)
-        self.right_barrier = Barrier(self.rect.right-45, self.rect.top, 245, self.rect.height)
-        self.top_barrier = Barrier(self.rect.left, self.rect.top-200, self.rect.width, 245)
-        self.bottom_barrier = Barrier(self.rect.left, self.rect.bottom-45, self.rect.width, 245)
+        self.left_barrier = Barrier(self.rect.left-200, self.rect.top-50, 245, self.rect.height+100)
+        self.right_barrier = Barrier(self.rect.right-45, self.rect.top-50, 245, self.rect.height+100)
+        self.top_barrier = Barrier(self.rect.left-50, self.rect.top-200, self.rect.width+100, 245)
+        self.bottom_barrier = Barrier(self.rect.left-50, self.rect.bottom-45, self.rect.width+100, 245)
         self.barrier_list = [self.left_barrier, self.right_barrier, self.top_barrier, self.bottom_barrier]
 
     # Drawing map
