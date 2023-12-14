@@ -18,16 +18,22 @@ moving_right = False
 moving_up = False
 moving_down = False
 
+moving_left2 = False
+moving_right2 = False
+moving_up2 = False
+moving_down2 = False
+
 
 # Defining the Player Class
 class Soldier(pygame.sprite.Sprite):
-    def __init__(self, x= 400, y=400, scale=0.1, speed=3):
+    def __init__(self, x= SCREEN_WIDTH/2, y=SCREEN_HEIGHT/2, scale=0.1, speed=3):
         pygame.sprite.Sprite.__init__(self)
         self.speed = speed
         img = pygame.image.load('img/player/idle/0.png')
         self.image = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+        self.hitbox = Hitbox(x, y, self.image)
         self.pos = 0
 
     def move(self, moving_left, moving_right, moving_up, moving_down):
@@ -36,7 +42,7 @@ class Soldier(pygame.sprite.Sprite):
         dy = 0
 
         self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
-        for entity in entity_list:
+        for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == "left":
                         self.rect.x += self.speed
@@ -51,25 +57,25 @@ class Soldier(pygame.sprite.Sprite):
 
         # Assign movement variable if moving
         if moving_left:
-            for entity in entity_list:
+            for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     self.pos = "left"
                     break
             dx += -self.speed
         if moving_right:
-            for entity in entity_list:
+            for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     self.pos = "right"
                     break
             dx += self.speed
         if moving_up:
-            for entity in entity_list:
+            for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     self.pos = "up"
                     break
             dy += -self.speed
         if moving_down:
-            for entity in entity_list:
+            for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     self.pos = "down"
                     break
@@ -88,7 +94,7 @@ class Soldier(pygame.sprite.Sprite):
 
 # Same as Soldier class for now, for testing purpose
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x= 400, y=100, scale=0.1, speed=3):
+    def __init__(self, x= SCREEN_WIDTH/2, y=100, scale=0.1, speed=3):
         pygame.sprite.Sprite.__init__(self)
         self.speed = speed
         img = pygame.image.load('img/player/idle/0.png')
@@ -96,36 +102,50 @@ class Entity(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.hitbox = Hitbox(x, y, self.image)
+        self.pos = 0
 
-    def move(self, moving_left, moving_right, moving_up, moving_down):
+    def move(self, moving_left2, moving_right2, moving_up2, moving_down2):
         # reset movement variables
         dx = 0
         dy = 0
 
+        self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
+        for entity in hitbox_list:
+                if (not entity==self) and (self.hitbox.collide(entity)):
+                    if self.pos == "left":
+                        self.rect.x += self.speed
+                    if self.pos == "right":
+                        self.rect.x -= self.speed
+                    if self.pos == "up":
+                        self.rect.y += self.speed
+                    if self.pos == "down":
+                        self.rect.y -= self.speed
+                    break
+        self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
 
         # Assign movement variable if moving
-        if moving_left:
-            for entity in entity_list:
+        if moving_left2:
+            for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dx = self.speed*2.5
+                    self.pos = "left"
                     break
             dx += -self.speed
-        if moving_right:
-            for entity in entity_list:
+        if moving_right2:
+            for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dx = -self.speed*2.5
+                    self.pos = "right"
                     break
             dx += self.speed
-        if moving_up:
-            for entity in entity_list:
+        if moving_up2:
+            for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dy = self.speed*2.5
+                    self.pos = "up"
                     break
             dy += -self.speed
-        if moving_down:
-            for entity in entity_list:
+        if moving_down2:
+            for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dy = -self.speed*2.5
+                    self.pos = "down"
                     break
             dy += self.speed
 
@@ -142,13 +162,19 @@ class Entity(pygame.sprite.Sprite):
 
 # Defining the Map class
 class Map(pygame.sprite.Sprite):
-    def __init__(self, img="img/map.png", x=1280/2, scale=2.8, y=720/2, speed=3):
+    def __init__(self, img="img/map.png", x=SCREEN_WIDTH/2, y=SCREEN_HEIGHT/2, scale=2.8, speed=3):
         pygame.sprite.Sprite.__init__(self)
         self.speed = speed
         img = pygame.image.load(img)
         self.image = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+
+        self.left_barrier = Barrier(self.rect.left-200, self.rect.top, 245, self.rect.height)
+        self.right_barrier = Barrier(self.rect.right-45, self.rect.top, 245, self.rect.height)
+        self.top_barrier = Barrier(self.rect.left, self.rect.top-200, self.rect.width, 245)
+        self.bottom_barrier = Barrier(self.rect.left, self.rect.bottom-45, self.rect.width, 245)
+        self.barrier_list = [self.left_barrier, self.right_barrier, self.top_barrier, self.bottom_barrier]
 
     # Drawing map
     def draw(self):
@@ -165,15 +191,23 @@ class Hitbox:
         # assert isinstance(other, Hitbox) or isinstance(other, Soldier), f"Can't collide Hitbox with another type than Hitbox or Soldier : attempted to collide {other}"
         return self.rect.colliderect(other.rect)
 
+class Barrier:
+    def __init__(self, x, y, W, H):
+        self.rect = pygame.Rect(x, y, W, H)
+    def collide(self, other):
+        return self.rect.colliderect(other.rect)
+
 
 # Creating the Player
 player = Soldier()
 
 monster = Entity()
 
-entity_list = [player, monster]
-
 map1 = Map()
+
+hitbox_list = [player, monster,]
+for elem in map1.barrier_list:
+    hitbox_list.append(elem)
 
 # Game Loop
 run = True
@@ -195,6 +229,8 @@ while run:
     
     # Moving the player
     player.move(moving_left, moving_right, moving_up, moving_down)
+    # Moving the monster/second player
+    monster.move(moving_left2, moving_right2, moving_up2, moving_down2)
 
 
     # Event Handler
@@ -211,7 +247,17 @@ while run:
                 moving_up = True
             if event.key == pygame.K_s:
                 moving_down = True
-            
+
+            # 2nd player movements (only for tests, we'll change it later by enemies movements)
+            if event.key == pygame.K_LEFT:
+                moving_left2 = True
+            if event.key == pygame.K_RIGHT:
+                moving_right2 = True
+            if event.key == pygame.K_UP:
+                moving_up2 = True
+            if event.key == pygame.K_DOWN:
+                moving_down2 = True
+
             # Escape escape the game
             if event.key == pygame.K_ESCAPE:
                 run = False
@@ -230,7 +276,16 @@ while run:
                 moving_up = False
             if event.key == pygame.K_s:
                 moving_down = False
-    
+
+            if event.key == pygame.K_LEFT:
+                moving_left2 = False
+            if event.key == pygame.K_RIGHT:
+                moving_right2 = False
+            if event.key == pygame.K_UP:
+                moving_up2 = False
+            if event.key == pygame.K_DOWN:
+                moving_down2 = False
+
     pygame.display.update()
 
 pygame.quit()
