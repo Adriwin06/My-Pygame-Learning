@@ -28,36 +28,50 @@ class Soldier(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+        self.pos = 0
 
     def move(self, moving_left, moving_right, moving_up, moving_down):
         # reset movement variables
         dx = 0
         dy = 0
 
+        self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
+        for entity in entity_list:
+                if (not entity==self) and (self.hitbox.collide(entity)):
+                    if self.pos == "left":
+                        self.rect.x += self.speed
+                    if self.pos == "right":
+                        self.rect.x -= self.speed
+                    if self.pos == "up":
+                        self.rect.y += self.speed
+                    if self.pos == "down":
+                        self.rect.y -= self.speed
+                    break
+        self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
 
         # Assign movement variable if moving
         if moving_left:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dx = self.speed*2.5
+                    self.pos = "left"
                     break
             dx += -self.speed
         if moving_right:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dx = -self.speed*2.5
+                    self.pos = "right"
                     break
             dx += self.speed
         if moving_up:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dy = self.speed*2.5
+                    self.pos = "up"
                     break
             dy += -self.speed
         if moving_down:
             for entity in entity_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    dy = -self.speed*2.5
+                    self.pos = "down"
                     break
             dy += self.speed
 
