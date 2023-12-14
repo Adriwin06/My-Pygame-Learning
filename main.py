@@ -143,7 +143,7 @@ class Entity(pygame.sprite.Sprite):
         self.pos2 = 0
 
         # Assign movement variable if moving
-        if moving_left:
+        if moving_left2:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == 0:
@@ -152,7 +152,7 @@ class Entity(pygame.sprite.Sprite):
                         self.pos2 = "left"
                     break
             dx += -self.speed
-        if moving_right:
+        if moving_right2:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == 0:
@@ -161,7 +161,7 @@ class Entity(pygame.sprite.Sprite):
                         self.pos2 = "right"
                     break
             dx += self.speed
-        if moving_up:
+        if moving_up2:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == 0:
@@ -170,7 +170,7 @@ class Entity(pygame.sprite.Sprite):
                         self.pos2 = "up"
                     break
             dy += -self.speed
-        if moving_down:
+        if moving_down2:
             for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == 0:
