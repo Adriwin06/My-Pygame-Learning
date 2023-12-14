@@ -119,6 +119,7 @@ class Entity(pygame.sprite.Sprite):
         self.rect.center = (x, y)
         self.hitbox = Hitbox(x, y, self.image)
         self.pos = 0
+        self.pos2 = 0
 
     def move(self, moving_left2, moving_right2, moving_up2, moving_down2):
         # reset movement variables
