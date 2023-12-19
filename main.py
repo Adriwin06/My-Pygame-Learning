@@ -36,6 +36,7 @@ class Soldier(pygame.sprite.Sprite):
         self.hitbox = Hitbox(x, y, self.image)
         self.pos = 0
         self.pos2 = 0
+        self.pos3 = 0
 
     def move(self, moving_left, moving_right, moving_up, moving_down):
         # reset movement variables
@@ -45,19 +46,20 @@ class Soldier(pygame.sprite.Sprite):
         self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
         for entity in hitbox_list:
                 if (not entity==self) and (self.hitbox.collide(entity)):
-                    if self.pos == "left" or self.pos2 == "left":
+                    if self.pos == "left" or self.pos2 == "left" or self.pos3 == "left":
                         self.rect.x += self.speed
-                    if self.pos == "right" or self.pos2 == "right":
+                    if self.pos == "right" or self.pos2 == "right" or self.pos3 == "right":
                         self.rect.x -= self.speed
-                    if self.pos == "up" or self.pos2 == "up":
+                    if self.pos == "up" or self.pos2 == "up" or self.pos3 == "up":
                         self.rect.y += self.speed
-                    if self.pos == "down" or self.pos2 == "down":
+                    if self.pos == "down" or self.pos2 == "down" or self.pos3 == "down":
                         self.rect.y -= self.speed
                     break
         self.hitbox = Hitbox(self.rect.x, self.rect.y, self.image)
         
         self.pos = 0
         self.pos2 = 0
+        self.pos3 = 0
 
         # Assign movement variable if moving
         if moving_left:
@@ -65,8 +67,10 @@ class Soldier(pygame.sprite.Sprite):
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == 0:
                         self.pos = "left"
-                    else:
+                    elif self.pos2 == 0:
                         self.pos2 = "left"
+                    else:
+                        self.pos3 = "left"
                     break
             dx += -self.speed
         if moving_right:
@@ -74,8 +78,10 @@ class Soldier(pygame.sprite.Sprite):
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == 0:
                         self.pos = "right"
-                    else:
+                    elif self.pos2 == 0:
                         self.pos2 = "right"
+                    else:
+                        self.pos3 = "right"
                     break
             dx += self.speed
         if moving_up:
@@ -83,8 +89,10 @@ class Soldier(pygame.sprite.Sprite):
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == 0:
                         self.pos = "up"
-                    else:
+                    elif self.pos2 == 0:
                         self.pos2 = "up"
+                    else:
+                        self.pos3 = "up"
                     break
             dy += -self.speed
         if moving_down:
@@ -92,8 +100,10 @@ class Soldier(pygame.sprite.Sprite):
                 if (not entity==self) and (self.hitbox.collide(entity)):
                     if self.pos == 0:
                         self.pos = "down"
-                    else:
+                    elif self.pos2 == 0:
                         self.pos2 = "down"
+                    else:
+                        self.pos3 = "down"
                     break
             dy += self.speed
 
